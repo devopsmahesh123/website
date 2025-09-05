@@ -13,32 +13,75 @@ Anon is a fully responsive ecommerce website, maximum compatiblities in all mobi
 ![Anon Desktop Demo](./website-demo-image/desktop.png "Desktop Demo")
 ![Anon Mobile Demo](./website-demo-image/mobile.png "Mobile Demo")
 
-## Prerequisites
 
-Before you begin, ensure you have met the following requirements:
+Perfect, Sadeeq! That repo hosts **Anon**, a responsive eCommerce website built with **HTML, CSS, and JavaScript**—no backend, so it's ideal for static hosting behind NGINX.
 
-* [Git](https://git-scm.com/downloads "Download Git") must be installed on your operating system.
+Here’s how you can deploy it on **EC2 with Docker and NGINX**:
 
-## Installing Anon
+---
 
-To install **Anon**, follow these steps:
+## 🛠️ Step-by-Step: Deploy Anon Website on EC2 with Docker + NGINX
 
-Linux and macOS:
-
+### 1️⃣ **SSH into EC2**
 ```bash
-sudo git clone https://github.com/codewithsadee/anon-ecommerce-website.git
+ssh -i your-key.pem ubuntu@your-ec2-ip
 ```
 
-Windows:
+---
 
+### 2️⃣ **Install Docker**
 ```bash
-git clone https://github.com/codewithsadee/anon-ecommerce-website.git
+sudo apt update
+sudo apt install -y docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
 ```
 
-## Contact
+---
 
-If you want to contact me you can reach me at [Twitter](https://www.twitter.com/codewithsadee).
+### 3️⃣ **Clone the Repo**
+```bash
+git clone https://github.com/devopsmahesh123/website.git
+cd website
+```
 
-## License
+---
 
-This project is **free to use** and does not contains any license.
+### 4️⃣ **Create Dockerfile**
+```bash
+nano Dockerfile
+```
+
+Paste this:
+```Dockerfile
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+---
+
+### 5️⃣ **Build Docker Image**
+```bash
+docker build -t anon-ecommerce .
+```
+
+---
+
+### 6️⃣ **Run Container**
+```bash
+docker run -d --name anon-site -p 80:80 anon-ecommerce
+```
+
+---
+
+### ✅ **Access the Site**
+Open your browser and visit:
+```
+http://<your-ec2-public-ip>
+```
+
+You should see the Anon homepage in all its responsive glory.
+
+---
